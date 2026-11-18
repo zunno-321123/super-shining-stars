@@ -84,8 +84,29 @@ section{padding:30px 0 55px}
 .tag{display:inline-block;margin-top:14px;border:1px solid #80623b;color:var(--gold2);padding:5px 9px;border-radius:20px;font-size:11px}
 .empty{border:1px dashed #69517f;border-radius:16px;padding:26px;text-align:center;color:var(--muted);line-height:1.7}
 .badge{font-size:11px;border:1px solid var(--line);border-radius:20px;padding:6px 9px;color:var(--gold2)}
+
+/* MATCH CARDS */
+.match-card{padding:20px;overflow:hidden}
+.match-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.match-card h3{margin:0;color:var(--gold2);font-size:18px}
+.match-status{
+font-size:11px;text-transform:uppercase;letter-spacing:1px;
+border:1px solid #80623b;color:var(--gold2);
+padding:6px 10px;border-radius:20px;
+}
+.match-status.completed{border-color:#4d9b70;color:#9be2b5}
+.match-status.cancelled{border-color:#a93645;color:#ffaaaa}
+.match-info{color:var(--muted);font-size:13px;line-height:1.8;margin:12px 0 0}
+.match-score{
+margin-top:14px;padding:13px;border-radius:10px;
+background:#130d22;border:1px solid var(--line);
+color:var(--gold2);font-weight:700;line-height:1.7;
+}
+.match-result{color:#fff;font-size:14px;margin-top:12px;font-weight:600}
+
 footer{border-top:1px solid var(--line);padding:28px 0;color:var(--muted);font-size:13px}
 .foot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+
 @media(max-width:760px){
 .nav{align-items:flex-start;padding:16px 0;flex-direction:column}
 .links{gap:13px}
@@ -131,6 +152,7 @@ footer{border-top:1px solid var(--line);padding:28px 0;color:var(--muted);font-s
 <a class="btn secondary" href="#matches">MATCH CENTRE</a>
 </div>
 </div>
+
 <div class="crest">
 <div>
 <div class="star">★</div>
@@ -155,6 +177,7 @@ footer{border-top:1px solid var(--line);padding:28px 0;color:var(--muted);font-s
 </div>
 <span class="badge">SQUAD ROSTER</span>
 </div>
+
 <div class="grid" id="database-player-list">
 <div class="empty">Loading team players...</div>
 </div>
@@ -165,10 +188,14 @@ footer{border-top:1px solid var(--line);padding:28px 0;color:var(--muted);font-s
 <div>
 <div class="eyebrow">MATCH CENTRE</div>
 <h2>Fixtures & Results</h2>
-<p>Upcoming matches and recent results will appear here.</p>
+<p>Live match schedules, scores and results of SUPER SHINING STARS.</p>
 </div>
+<span class="badge">LIVE DATABASE</span>
 </div>
-<div class="empty">No official match records have been added yet.<br>Match schedules and scorecards will be published here.</div>
+
+<div class="grid" id="database-match-list">
+<div class="empty">Loading match records...</div>
+</div>
 </section>
 
 <section>
@@ -210,7 +237,6 @@ SUPER SHINING STARS is a cricket team built on teamwork, discipline and a love f
 
 <script>
 const SUPABASE_URL = "https://nvkqxeiicvwbuiogcbpj.supabase.co";
-
 const SUPABASE_KEY = "sb_publishable_-C9Axiw3Y6JC2sbupeFVHQ_lSym4gKd";
 
 const db = window.supabase.createClient(
@@ -218,9 +244,10 @@ const db = window.supabase.createClient(
   SUPABASE_KEY
 );
 
+/* LOAD LIVE SQUAD */
+
 async function loadTeamPlayers() {
   const list = document.getElementById("database-player-list");
-  const status = document.createElement("p");
 
   try {
     const { data, error } = await db
@@ -231,10 +258,13 @@ async function loadTeamPlayers() {
 
     if (error) throw error;
 
-    list.innerHTML = "";
+    list.replaceChildren();
 
     if (!data || data.length === 0) {
-      list.innerHTML = '<div class="empty">No active players found.</div>';
+      const empty = document.createElement("div");
+      empty.className = "empty";
+      empty.textContent = "No active players found.";
+      list.appendChild(empty);
       document.getElementById("player-count").textContent = "0";
       return;
     }
@@ -263,7 +293,7 @@ async function loadTeamPlayers() {
     });
 
   } catch (error) {
-    list.innerHTML = "";
+    list.replaceChildren();
     const message = document.createElement("div");
     message.className = "empty";
     message.textContent = "Unable to load squad: " + error.message;
@@ -271,7 +301,105 @@ async function loadTeamPlayers() {
   }
 }
 
+/* LOAD LIVE MATCHES */
+
+async function loadMatches() {
+  const list = document.getElementById("database-match-list");
+
+  try {
+    const { data, error } = await db
+      .from("matches")
+      .select("id, opponent, match_date, venue, result, our_score, opponent_score, status")
+      .order("match_date", { ascending: false })
+      .order("id", { ascending: false });
+
+    if (error) throw error;
+
+    list.replaceChildren();
+
+    if (!data || data.length === 0) {
+      const empty = document.createElement("div");
+      empty.className = "empty";
+      empty.textContent = "No official match records have been added yet. Match schedules and scorecards will be published here.";
+      list.appendChild(empty);
+      return;
+    }
+
+    data.forEach(match => {
+      const card = document.createElement("article");
+      card.className = "card match-card";
+
+      const head = document.createElement("div");
+      head.className = "match-head";
+
+      const title = document.createElement("h3");
+      title.textContent = "SUPER SHINING STARS vs " + match.opponent;
+
+      const status = document.createElement("span");
+      const statusValue = (match.status || "upcoming").toLowerCase();
+      status.className = "match-status " + statusValue;
+      status.textContent = statusValue;
+
+      head.append(title, status);
+      card.appendChild(head);
+
+      const info = document.createElement("div");
+      info.className = "match-info";
+
+      let dateText = "Date not announced";
+
+      if (match.match_date) {
+        const date = new Date(match.match_date + "T00:00:00");
+        dateText = date.toLocaleDateString("en-GB", {
+          day: "numeric",
+          month: "long",
+          year: "numeric"
+        });
+      }
+
+      info.textContent =
+        "📅 Date: " + dateText +
+        "\n📍 Venue: " + (match.venue || "To be announced");
+
+      info.style.whiteSpace = "pre-line";
+      card.appendChild(info);
+
+      if (match.our_score || match.opponent_score) {
+        const score = document.createElement("div");
+        score.className = "match-score";
+        score.textContent =
+          "SUPER SHINING STARS: " + (match.our_score || "—") +
+          "\n" + match.opponent + ": " + (match.opponent_score || "—");
+        score.style.whiteSpace = "pre-line";
+        card.appendChild(score);
+      }
+
+      if (match.result) {
+        const result = document.createElement("div");
+        result.className = "match-result";
+        result.textContent = "🏆 Result: " + match.result;
+        card.appendChild(result);
+      }
+
+      list.appendChild(card);
+    });
+
+  } catch (error) {
+    list.replaceChildren();
+
+    const message = document.createElement("div");
+    message.className = "empty";
+    message.textContent = "Unable to load matches: " + error.message;
+
+    list.appendChild(message);
+  }
+}
+
+/* START DATABASE LOADING */
+
 loadTeamPlayers();
+loadMatches();
+
 </script>
 
 </body>
