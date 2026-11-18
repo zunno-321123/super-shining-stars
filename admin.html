@@ -3,25 +3,25 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SUPER SHINING STARS - Admin</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SUPER SHINING STARS Admin</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#100d20;color:white;font-family:Arial,sans-serif;padding:20px}
-.container{max-width:850px;margin:auto}
-h1{color:#e8bd55;text-align:center}
-h2{color:#e8bd55}
-.card{background:#201a36;border:1px solid #51416e;border-radius:14px;padding:20px;margin:18px 0}
+body{margin:0;padding:18px;background:#100d20;color:white;font-family:Arial,sans-serif}
+.container{max-width:900px;margin:auto}
+h1,h2{color:#e8bd55}
+h1{text-align:center}
+.card{background:#201a36;border:1px solid #51416e;border-radius:14px;padding:18px;margin:18px 0}
 input,select,button{width:100%;padding:13px;margin:7px 0;border-radius:8px;border:1px solid #665681;font-size:15px}
 input,select{background:#130f24;color:white}
-button{background:#d9ad48;color:#171020;font-weight:bold;border:0;cursor:pointer}
-button.danger{background:#a93645;color:white}
+button{background:#d9ad48;color:#171020;font-weight:bold;border:0}
 button.secondary{background:#51416e;color:white}
+button.danger{background:#a93645;color:white}
 .hidden{display:none}
-.message{padding:12px;border-radius:8px;margin:10px 0;background:#382c50;overflow-wrap:anywhere}
-.player{background:#302747;padding:13px;border-radius:9px;margin:10px 0}
-.player strong{color:#e8bd55}
+.message{padding:12px;background:#382c50;border-radius:8px;margin:10px 0;overflow-wrap:anywhere}
+.item{background:#302747;padding:13px;border-radius:9px;margin:10px 0}
+.item strong{color:#e8bd55}
 .actions{display:flex;gap:8px}
 .actions button{flex:1}
 .small{color:#c5bbd5;font-size:13px}
@@ -43,7 +43,7 @@ button.secondary{background:#51416e;color:white}
 <div id="dashboard" class="hidden">
 <div class="card">
 <h2>Admin Dashboard</h2>
-<p id="welcome" class="small">Logged in</p>
+<p id="welcome" class="small"></p>
 <button id="logoutBtn" class="secondary">Logout</button>
 </div>
 
@@ -60,15 +60,40 @@ button.secondary{background:#51416e;color:white}
 <option>Fast Bowler</option>
 </select>
 <input id="jersey" type="number" placeholder="Jersey number (optional)">
-<button id="saveBtn" type="submit">Add Player</button>
-<button id="cancelEdit" type="button" class="secondary hidden">Cancel Edit</button>
+<button id="savePlayerBtn">Add Player</button>
+<button id="cancelPlayerEdit" type="button" class="secondary hidden">Cancel Edit</button>
 </form>
 <div id="playerMessage" class="message hidden"></div>
+<div id="playerList">Loading players...</div>
 </div>
 
 <div class="card">
-<h2>Squad Players</h2>
-<div id="playerList">Loading players...</div>
+<h2>🏏 Matches Management</h2>
+<form id="matchForm">
+<input id="opponent" placeholder="Opponent team name" required>
+<label>Match Date</label>
+<input id="matchDate" type="date">
+<input id="venue" placeholder="Ground / Venue">
+
+<select id="matchStatus">
+<option value="upcoming">Upcoming</option>
+<option value="completed">Completed</option>
+<option value="cancelled">Cancelled</option>
+</select>
+
+<input id="ourScore" placeholder="Our team score (e.g. 165/6)">
+<input id="opponentScore" placeholder="Opponent score (e.g. 150/8)">
+<input id="matchResult" placeholder="Result (e.g. Won by 15 runs)">
+
+<button id="saveMatchBtn">Add Match</button>
+<button id="cancelMatchEdit" type="button" class="secondary hidden">Cancel Edit</button>
+</form>
+<div id="matchMessage" class="message hidden"></div>
+</div>
+
+<div class="card">
+<h2>📋 All Matches</h2>
+<div id="matchList">Loading matches...</div>
 </div>
 </div>
 </div>
@@ -76,198 +101,302 @@ button.secondary{background:#51416e;color:white}
 <script>
 const SUPABASE_URL = "https://nvkqxeiicvwbuiogcbpj.supabase.co";
 const SUPABASE_KEY = "sb_publishable_-C9Axiw3Y6JC2sbupeFVHQ_lSym4gKd";
-const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const db = window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 
 const $ = id => document.getElementById(id);
-let editingId = null;
+let editingPlayerId = null;
+let editingMatchId = null;
 
-function message(id, text) {
-  $(id).textContent = text;
+function showMessage(id,text){
+  $(id).textContent=text;
   $(id).classList.remove("hidden");
 }
 
-async function verifyAdmin() {
-  const {data:{session}} = await db.auth.getSession();
+async function verifyAdmin(){
+  const {data:{session}}=await db.auth.getSession();
 
-  if (!session) {
+  if(!session){
     $("loginBox").classList.remove("hidden");
     $("dashboard").classList.add("hidden");
     return;
   }
 
-  const {data, error} = await db.rpc("is_admin");
+  const {data,error}=await db.rpc("is_admin");
 
-  if (error || data !== true) {
+  if(error || data!==true){
     await db.auth.signOut();
     $("loginBox").classList.remove("hidden");
     $("dashboard").classList.add("hidden");
-    message("loginMessage", "This account is not authorized as an admin.");
+    showMessage("loginMessage","This account is not authorized as an admin.");
     return;
   }
 
   $("loginBox").classList.add("hidden");
   $("dashboard").classList.remove("hidden");
-  $("welcome").textContent = "Logged in: " + session.user.email;
+  $("welcome").textContent="Logged in: "+session.user.email;
+
   loadPlayers();
+  loadMatches();
 }
 
-$("loginBtn").addEventListener("click", async () => {
-  const email = $("email").value.trim();
-  const password = $("password").value;
+$("loginBtn").addEventListener("click",async()=>{
+  const email=$("email").value.trim();
+  const password=$("password").value;
 
-  if (!email || !password) {
-    message("loginMessage", "Please enter email and password.");
+  if(!email || !password){
+    showMessage("loginMessage","Enter email and password.");
     return;
   }
 
-  $("loginBtn").disabled = true;
-  $("loginBtn").textContent = "Logging in...";
+  $("loginBtn").disabled=true;
+  const {error}=await db.auth.signInWithPassword({email,password});
+  $("loginBtn").disabled=false;
 
-  const {error} = await db.auth.signInWithPassword({email, password});
-
-  $("loginBtn").disabled = false;
-  $("loginBtn").textContent = "Login";
-
-  if (error) {
-    message("loginMessage", error.message);
+  if(error){
+    showMessage("loginMessage",error.message);
     return;
   }
 
   await verifyAdmin();
 });
 
-$("logoutBtn").addEventListener("click", async () => {
+$("logoutBtn").addEventListener("click",async()=>{
   await db.auth.signOut();
   $("dashboard").classList.add("hidden");
   $("loginBox").classList.remove("hidden");
-  $("password").value = "";
+  $("password").value="";
 });
 
-async function loadPlayers() {
-  $("playerList").textContent = "Loading players...";
+async function loadPlayers(){
+  $("playerList").textContent="Loading players...";
 
-  const {data, error} = await db
-    .from("players")
+  const {data,error}=await db.from("players")
     .select("id,name,role,jersey_number,is_active")
     .order("name");
 
-  if (error) {
-    $("playerList").textContent = "Error: " + error.message;
+  if(error){
+    $("playerList").textContent=error.message;
     return;
   }
 
   $("playerList").replaceChildren();
 
-  if (!data || data.length === 0) {
-    $("playerList").textContent = "No players found.";
-    return;
-  }
+  data.forEach(p=>{
+    const box=document.createElement("div");
+    box.className="item";
 
-  data.forEach(player => {
-    const box = document.createElement("div");
-    box.className = "player";
+    const title=document.createElement("strong");
+    title.textContent=p.name;
 
-    const title = document.createElement("strong");
-    title.textContent = player.name || "Unnamed player";
+    const detail=document.createElement("p");
+    detail.textContent=(p.role||"No role")+" | Jersey: "+(p.jersey_number??"Not set");
 
-    const details = document.createElement("p");
-    details.textContent =
-      (player.role || "No role") +
-      " | Jersey: " +
-      (player.jersey_number ?? "Not set") +
-      " | " +
-      (player.is_active ? "Active" : "Inactive");
+    const actions=document.createElement("div");
+    actions.className="actions";
 
-    const actions = document.createElement("div");
-    actions.className = "actions";
+    const edit=document.createElement("button");
+    edit.textContent="Edit";
+    edit.addEventListener("click",()=>editPlayer(p));
 
-    const edit = document.createElement("button");
-    edit.textContent = "Edit";
-    edit.addEventListener("click", () => editPlayer(player));
+    const del=document.createElement("button");
+    del.textContent="Delete";
+    del.className="danger";
+    del.addEventListener("click",()=>deletePlayer(p.id));
 
-    const del = document.createElement("button");
-    del.textContent = "Delete";
-    del.className = "danger";
-    del.addEventListener("click", () => deletePlayer(player.id));
-
-    actions.append(edit, del);
-    box.append(title, details, actions);
+    actions.append(edit,del);
+    box.append(title,detail,actions);
     $("playerList").append(box);
   });
 }
 
-$("playerForm").addEventListener("submit", async event => {
-  event.preventDefault();
+$("playerForm").addEventListener("submit",async e=>{
+  e.preventDefault();
 
-  const name = $("playerName").value.trim();
-  const role = $("playerRole").value;
-  const jerseyValue = $("jersey").value;
+  const name=$("playerName").value.trim();
+  const role=$("playerRole").value;
+  const j=$("jersey").value;
 
-  if (!name || !role) {
-    message("playerMessage", "Enter player name and role.");
-    return;
-  }
-
-  const playerData = {
+  const payload={
     name,
     role,
-    jersey_number: jerseyValue === "" ? null : Number(jerseyValue),
-    is_active: true
+    jersey_number:j===""?null:Number(j),
+    is_active:true
   };
-
-  $("saveBtn").disabled = true;
 
   let result;
 
-  if (editingId !== null) {
-    result = await db.from("players").update(playerData).eq("id", editingId);
-  } else {
-    result = await db.from("players").insert(playerData);
+  if(editingPlayerId!==null){
+    result=await db.from("players").update(payload).eq("id",editingPlayerId);
+  }else{
+    result=await db.from("players").insert(payload);
   }
 
-  $("saveBtn").disabled = false;
-
-  if (result.error) {
-    message("playerMessage", result.error.message);
+  if(result.error){
+    showMessage("playerMessage",result.error.message);
     return;
   }
 
-  message("playerMessage", editingId !== null ? "Player updated!" : "Player added!");
-  resetForm();
+  showMessage("playerMessage",editingPlayerId!==null?"Player updated!":"Player added!");
+  resetPlayerForm();
   loadPlayers();
 });
 
-function editPlayer(player) {
-  editingId = player.id;
-  $("playerName").value = player.name || "";
-  $("playerRole").value = player.role || "";
-  $("jersey").value = player.jersey_number ?? "";
-  $("saveBtn").textContent = "Update Player";
-  $("cancelEdit").classList.remove("hidden");
+function editPlayer(p){
+  editingPlayerId=p.id;
+  $("playerName").value=p.name||"";
+  $("playerRole").value=p.role||"";
+  $("jersey").value=p.jersey_number??"";
+  $("savePlayerBtn").textContent="Update Player";
+  $("cancelPlayerEdit").classList.remove("hidden");
   $("playerForm").scrollIntoView({behavior:"smooth"});
 }
 
-function resetForm() {
-  editingId = null;
+function resetPlayerForm(){
+  editingPlayerId=null;
   $("playerForm").reset();
-  $("saveBtn").textContent = "Add Player";
-  $("cancelEdit").classList.add("hidden");
+  $("savePlayerBtn").textContent="Add Player";
+  $("cancelPlayerEdit").classList.add("hidden");
 }
 
-$("cancelEdit").addEventListener("click", resetForm);
+$("cancelPlayerEdit").addEventListener("click",resetPlayerForm);
 
-async function deletePlayer(id) {
-  if (!confirm("Are you sure you want to delete this player?")) return;
+async function deletePlayer(id){
+  if(!confirm("Delete this player?"))return;
 
-  const {error} = await db.from("players").delete().eq("id", id);
+  const {error}=await db.from("players").delete().eq("id",id);
 
-  if (error) {
-    message("playerMessage", error.message);
+  if(error){
+    showMessage("playerMessage",error.message);
     return;
   }
 
-  message("playerMessage", "Player deleted.");
+  showMessage("playerMessage","Player deleted.");
   loadPlayers();
+}
+
+/* MATCHES MANAGEMENT */
+
+async function loadMatches(){
+  $("matchList").textContent="Loading matches...";
+
+  const {data,error}=await db.from("matches")
+    .select("id,opponent,match_date,venue,result,our_score,opponent_score,status")
+    .order("match_date",{ascending:false});
+
+  if(error){
+    $("matchList").textContent="Error: "+error.message;
+    return;
+  }
+
+  $("matchList").replaceChildren();
+
+  if(!data || data.length===0){
+    $("matchList").textContent="No matches added yet.";
+    return;
+  }
+
+  data.forEach(m=>{
+    const box=document.createElement("div");
+    box.className="item";
+
+    const title=document.createElement("strong");
+    title.textContent="SUPER SHINING STARS vs "+m.opponent;
+
+    const detail=document.createElement("p");
+    detail.textContent=
+      "Date: "+(m.match_date||"Not set")+
+      "\nVenue: "+(m.venue||"Not set")+
+      "\nStatus: "+(m.status||"upcoming")+
+      "\nOur Score: "+(m.our_score||"-")+
+      "\nOpponent Score: "+(m.opponent_score||"-")+
+      "\nResult: "+(m.result||"Not updated");
+    detail.style.whiteSpace="pre-line";
+
+    const actions=document.createElement("div");
+    actions.className="actions";
+
+    const edit=document.createElement("button");
+    edit.textContent="Edit";
+    edit.addEventListener("click",()=>editMatch(m));
+
+    const del=document.createElement("button");
+    del.textContent="Delete";
+    del.className="danger";
+    del.addEventListener("click",()=>deleteMatch(m.id));
+
+    actions.append(edit,del);
+    box.append(title,detail,actions);
+    $("matchList").append(box);
+  });
+}
+
+$("matchForm").addEventListener("submit",async e=>{
+  e.preventDefault();
+
+  const payload={
+    opponent:$("opponent").value.trim(),
+    match_date:$("matchDate").value||null,
+    venue:$("venue").value.trim()||null,
+    status:$("matchStatus").value,
+    our_score:$("ourScore").value.trim()||null,
+    opponent_score:$("opponentScore").value.trim()||null,
+    result:$("matchResult").value.trim()||null
+  };
+
+  let result;
+
+  if(editingMatchId!==null){
+    result=await db.from("matches").update(payload).eq("id",editingMatchId);
+  }else{
+    result=await db.from("matches").insert(payload);
+  }
+
+  if(result.error){
+    showMessage("matchMessage",result.error.message);
+    return;
+  }
+
+  showMessage("matchMessage",editingMatchId!==null?"Match updated!":"Match added!");
+  resetMatchForm();
+  loadMatches();
+});
+
+function editMatch(m){
+  editingMatchId=m.id;
+  $("opponent").value=m.opponent||"";
+  $("matchDate").value=m.match_date||"";
+  $("venue").value=m.venue||"";
+  $("matchStatus").value=m.status||"upcoming";
+  $("ourScore").value=m.our_score||"";
+  $("opponentScore").value=m.opponent_score||"";
+  $("matchResult").value=m.result||"";
+
+  $("saveMatchBtn").textContent="Update Match";
+  $("cancelMatchEdit").classList.remove("hidden");
+  $("matchForm").scrollIntoView({behavior:"smooth"});
+}
+
+function resetMatchForm(){
+  editingMatchId=null;
+  $("matchForm").reset();
+  $("saveMatchBtn").textContent="Add Match";
+  $("cancelMatchEdit").classList.add("hidden");
+}
+
+$("cancelMatchEdit").addEventListener("click",resetMatchForm);
+
+async function deleteMatch(id){
+  if(!confirm("Are you sure you want to delete this match?"))return;
+
+  const {error}=await db.from("matches").delete().eq("id",id);
+
+  if(error){
+    showMessage("matchMessage",error.message);
+    return;
+  }
+
+  showMessage("matchMessage","Match deleted.");
+  loadMatches();
 }
 
 verifyAdmin();
