@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,63 +6,211 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#160d2b">
 <title>SUPER SHINING STARS 🌟 | Official Cricket Club</title>
+
 <style>
-:root{--bg:#10091e;--panel:#1b1230;--panel2:#24183d;--gold:#e8bd62;--gold2:#ffe3a0;--muted:#b9aecb;--white:#fff;--line:#3b2b56}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 80% 0%,#392057 0,transparent 38%),var(--bg);color:var(--white);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}a{color:inherit;text-decoration:none}.wrap{width:min(1120px,92%);margin:auto}
-header{position:sticky;top:0;z-index:10;background:#120b20ed;backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}.nav{min-height:72px;display:flex;align-items:center;justify-content:space-between;gap:18px}.brand{font-weight:900;letter-spacing:.5px;color:var(--gold2)}.brand small{display:block;font-size:10px;letter-spacing:3px;color:var(--muted);font-weight:600}.links{display:flex;gap:20px;flex-wrap:wrap;font-size:14px;color:var(--muted)}.links a:hover{color:var(--gold2)}
-.hero{padding:76px 0 60px;display:grid;grid-template-columns:1.25fr .75fr;gap:30px;align-items:center}.eyebrow{color:var(--gold);font-size:12px;letter-spacing:3px;font-weight:800}.hero h1{font-size:clamp(38px,7vw,70px);line-height:1.02;margin:14px 0}.hero h1 span{color:var(--gold2);text-shadow:0 0 28px #d9a84d55}.hero p{color:var(--muted);max-width:590px;line-height:1.8}.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}.btn{padding:12px 18px;border-radius:10px;background:linear-gradient(135deg,var(--gold2),#c18b35);color:#21142c;font-weight:800;display:inline-block}.btn.secondary{background:transparent;border:1px solid var(--gold);color:var(--gold2)}.crest{min-height:270px;border:1px solid #80623b;border-radius:28px;background:linear-gradient(145deg,#33204d,#160d27 65%);display:grid;place-items:center;box-shadow:0 0 60px #c99b4820,inset 0 0 40px #e8bd6210}.crest .star{font-size:100px;color:var(--gold2);text-shadow:0 0 35px #e8bd62}.crest strong{display:block;text-align:center;color:var(--gold2);letter-spacing:4px;font-size:15px}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:10px auto 65px}.stat,.card{background:linear-gradient(145deg,#24183a,#191128);border:1px solid var(--line);border-radius:16px;padding:20px}.stat b{display:block;color:var(--gold2);font-size:27px}.stat span{font-size:12px;color:var(--muted)}
-section{padding:30px 0 55px}.section-head{display:flex;justify-content:space-between;align-items:end;gap:15px;margin-bottom:20px}.section-head h2{font-size:28px;margin:5px 0}.section-head p{margin:0;color:var(--muted);font-size:13px}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.player{position:relative;overflow:hidden}.number{font-size:12px;color:var(--gold);letter-spacing:2px}.player h3{margin:9px 0 3px}.role{color:var(--muted);font-size:13px}.tag{display:inline-block;margin-top:14px;border:1px solid #80623b;color:var(--gold2);padding:5px 9px;border-radius:20px;font-size:11px}
-.empty{border:1px dashed #69517f;border-radius:16px;padding:26px;text-align:center;color:var(--muted);line-height:1.7}.match{display:flex;justify-content:space-between;align-items:center;gap:12px}.match b{color:var(--gold2)}.match small{display:block;color:var(--muted);margin-top:5px}.badge{font-size:11px;border:1px solid var(--line);border-radius:20px;padding:6px 9px;color:var(--gold2)}
-footer{border-top:1px solid var(--line);padding:28px 0;color:var(--muted);font-size:13px}.foot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
-@media(max-width:760px){.nav{align-items:flex-start;padding:16px 0;flex-direction:column}.links{gap:13px}.hero{grid-template-columns:1fr;padding-top:48px}.crest{min-height:190px}.stats{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr 1fr}.section-head{align-items:flex-start;flex-direction:column}}
-@media(max-width:430px){.grid{grid-template-columns:1fr}.hero h1{font-size:43px}.stat{padding:15px}}
+:root{
+--bg:#10091e;
+--panel:#1b1230;
+--gold:#e8bd62;
+--gold2:#ffe3a0;
+--muted:#b9aecb;
+--white:#fff;
+--line:#3b2b56;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+margin:0;
+background:radial-gradient(ellipse at 80% 0%,#392057 0,transparent 38%),var(--bg);
+color:var(--white);
+font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+}
+a{color:inherit;text-decoration:none}
+.wrap{width:min(1120px,92%);margin:auto}
+header{
+position:sticky;top:0;z-index:10;
+background:#120b20ed;
+backdrop-filter:blur(12px);
+border-bottom:1px solid var(--line);
+}
+.nav{
+min-height:72px;display:flex;align-items:center;
+justify-content:space-between;gap:18px;
+}
+.brand{font-weight:900;letter-spacing:.5px;color:var(--gold2)}
+.brand small{
+display:block;font-size:10px;letter-spacing:3px;
+color:var(--muted);font-weight:600;
+}
+.links{display:flex;gap:20px;flex-wrap:wrap;font-size:14px;color:var(--muted)}
+.links a:hover{color:var(--gold2)}
+.hero{
+padding:76px 0 60px;
+display:grid;grid-template-columns:1.25fr .75fr;
+gap:30px;align-items:center;
+}
+.eyebrow{color:var(--gold);font-size:12px;letter-spacing:3px;font-weight:800}
+.hero h1{font-size:clamp(38px,7vw,70px);line-height:1.02;margin:14px 0}
+.hero h1 span{color:var(--gold2);text-shadow:0 0 28px #d9a84d55}
+.hero p{color:var(--muted);max-width:590px;line-height:1.8}
+.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
+.btn{
+padding:12px 18px;border-radius:10px;
+background:linear-gradient(135deg,var(--gold2),#c18b35);
+color:#21142c;font-weight:800;display:inline-block;
+}
+.btn.secondary{background:transparent;border:1px solid var(--gold);color:var(--gold2)}
+.crest{
+min-height:270px;border:1px solid #80623b;border-radius:28px;
+background:linear-gradient(145deg,#33204d,#160d27 65%);
+display:grid;place-items:center;
+box-shadow:0 0 60px #c99b4820,inset 0 0 40px #e8bd6210;
+}
+.crest .star{font-size:100px;color:var(--gold2);text-shadow:0 0 35px #e8bd62}
+.crest strong{display:block;text-align:center;color:var(--gold2);letter-spacing:4px;font-size:15px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:10px auto 65px}
+.stat,.card{background:linear-gradient(145deg,#24183a,#191128);border:1px solid var(--line);border-radius:16px;padding:20px}
+.stat b{display:block;color:var(--gold2);font-size:27px}
+.stat span{font-size:12px;color:var(--muted)}
+section{padding:30px 0 55px}
+.section-head{display:flex;justify-content:space-between;align-items:end;gap:15px;margin-bottom:20px}
+.section-head h2{font-size:28px;margin:5px 0}
+.section-head p{margin:0;color:var(--muted);font-size:13px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
+.player{position:relative;overflow:hidden}
+.number{font-size:12px;color:var(--gold);letter-spacing:2px}
+.player h3{margin:9px 0 3px}
+.role{color:var(--muted);font-size:13px}
+.tag{display:inline-block;margin-top:14px;border:1px solid #80623b;color:var(--gold2);padding:5px 9px;border-radius:20px;font-size:11px}
+.empty{border:1px dashed #69517f;border-radius:16px;padding:26px;text-align:center;color:var(--muted);line-height:1.7}
+.badge{font-size:11px;border:1px solid var(--line);border-radius:20px;padding:6px 9px;color:var(--gold2)}
+footer{border-top:1px solid var(--line);padding:28px 0;color:var(--muted);font-size:13px}
+.foot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+@media(max-width:760px){
+.nav{align-items:flex-start;padding:16px 0;flex-direction:column}
+.links{gap:13px}
+.hero{grid-template-columns:1fr;padding-top:48px}
+.crest{min-height:190px}
+.stats{grid-template-columns:repeat(2,1fr)}
+.grid{grid-template-columns:1fr 1fr}
+.section-head{align-items:flex-start;flex-direction:column}
+}
+@media(max-width:430px){
+.grid{grid-template-columns:1fr}
+.hero h1{font-size:43px}
+.stat{padding:15px}
+}
 </style>
 </head>
+
 <body>
-<header><div class="wrap nav">
-  <a class="brand" href="#home">SUPER SHINING STARS 🌟<small>OFFICIAL CRICKET CLUB</small></a>
-  <nav class="links"><a href="#home">Home</a><a href="#squad">Squad</a><a href="#matches">Matches</a><a href="#stats">Statistics</a><a href="#about">About</a></nav>
-</div></header>
-<main class="wrap">
-<section class="hero" id="home">
-  <div><div class="eyebrow">THE PRIDE · THE PASSION · THE TEAM</div>
-    <h1>PLAY WITH<br><span>PASSION.</span><br>SHINE TOGETHER.</h1>
-    <p>Welcome to the official home of SUPER SHINING STARS. Follow our squad, match updates, performances and club journey — all in one place.</p>
-    <div class="actions"><a class="btn" href="#squad">MEET THE SQUAD</a><a class="btn secondary" href="#matches">MATCH CENTRE</a></div>
-  </div>
-  <div class="crest"><div><div class="star">★</div><strong>SUPER SHINING STARS</strong></div></div>
-</section>
-<div class="stats" id="stats">
-  <div class="stat"><b>—</b><span>MATCHES PLAYED</span></div><div class="stat"><b>—</b><span>WINS</span></div><div class="stat"><b>—</b><span>PLAYERS</span></div><div class="stat"><b>18</b><span>TEAM JERSEY · ZUNNORAIN</span></div>
+
+<header>
+<div class="wrap nav">
+<a class="brand" href="#home">SUPER SHINING STARS 🌟
+<small>OFFICIAL CRICKET CLUB</small></a>
+<nav class="links">
+<a href="#home">Home</a>
+<a href="#squad">Squad</a>
+<a href="#matches">Matches</a>
+<a href="#stats">Statistics</a>
+<a href="#about">About</a>
+</nav>
 </div>
-<section id="squad"><div class="section-head"><div><div class="eyebrow">OUR TEAM</div><h2>Meet the Squad</h2><p>Committed players. One team. One vision.</p></div><span class="badge">SQUAD ROSTER</span></div>
-<div class="grid">
-  <article class="card player"><div class="number">CAPTAIN</div><h3>Ghulam Muhammad</h3><div class="role">Captain · Batsman</div><span class="tag">TEAM LEADER</span></article>
-  <article class="card player"><div class="number">WICKETKEEPER</div><h3>Bilal</h3><div class="role">Wicketkeeper</div><span class="tag">KEEPER</span></article>
-  <article class="card player"><div class="number">ALL-ROUNDER · #18</div><h3>Muhammad Zunnorain</h3><div class="role">All-Rounder</div><span class="tag">JERSEY 18</span></article>
-  <article class="card player"><div class="number">BATSMAN</div><h3>Junaid</h3><div class="role">Batsman</div></article>
-  <article class="card player"><div class="number">BATSMAN</div><h3>Talha Ahmad</h3><div class="role">Batsman</div></article>
-  <article class="card player"><div class="number">BATSMAN</div><h3>Hamza</h3><div class="role">Batsman</div></article>
-  <article class="card player"><div class="number">BOWLER</div><h3>Uzair</h3><div class="role">Bowler</div></article>
-  <article class="card player"><div class="number">BOWLER</div><h3>Hassan</h3><div class="role">Bowler</div></article>
-  <article class="card player"><div class="number">BOWLER</div><h3>Hasnain</h3><div class="role">Bowler</div></article>
-  <article class="card player"><div class="number">BOWLER</div><h3>Ismail</h3><div class="role">Bowler</div></article>
-  <article class="card player"><div class="number">BOWLER</div><h3>Ilyas Ahmad</h3><div class="role">Bowler</div></article>
-  <article class="card player"><div class="number">ALL-ROUNDER</div><h3>Haris</h3><div class="role">All-Rounder</div></article>
-</div></section>
-<section id="matches"><div class="section-head"><div><div class="eyebrow">MATCH CENTRE</div><h2>Fixtures & Results</h2><p>Upcoming matches and recent results will appear here.</p></div></div><div class="empty">No official match records have been added yet.<br>Match schedules and scorecards will be published here.</div></section>
-<section><div class="section-head"><div><div class="eyebrow">CLUB PERFORMANCE</div><h2>Statistics & Records</h2><p>Player and team performance tracking.</p></div></div><div class="empty">Statistics will appear after verified match data is entered.</div></section>
-<section id="about"><div class="section-head"><div><div class="eyebrow">OUR IDENTITY</div><h2>About the Club</h2></div></div><div class="card"><p style="color:var(--muted);line-height:1.8;margin:0">SUPER SHINING STARS is a cricket team built on teamwork, discipline and a love for the game. This official website is being developed to bring our squad, matches, results and achievements together.</p></div></section>
+</header>
+
+<main class="wrap">
+
+<section class="hero" id="home">
+<div>
+<div class="eyebrow">THE PRIDE · THE PASSION · THE TEAM</div>
+<h1>PLAY WITH<br><span>PASSION.</span><br>SHINE TOGETHER.</h1>
+<p>Welcome to the official home of SUPER SHINING STARS. Follow our squad, match updates, performances and club journey — all in one place.</p>
+<div class="actions">
+<a class="btn" href="#squad">MEET THE SQUAD</a>
+<a class="btn secondary" href="#matches">MATCH CENTRE</a>
+</div>
+</div>
+<div class="crest">
+<div>
+<div class="star">★</div>
+<strong>SUPER SHINING STARS</strong>
+</div>
+</div>
+</section>
+
+<div class="stats" id="stats">
+<div class="stat"><b>—</b><span>MATCHES PLAYED</span></div>
+<div class="stat"><b>—</b><span>WINS</span></div>
+<div class="stat"><b id="player-count">—</b><span>PLAYERS</span></div>
+<div class="stat"><b>18</b><span>TEAM JERSEY · ZUNNORAIN</span></div>
+</div>
+
+<section id="squad">
+<div class="section-head">
+<div>
+<div class="eyebrow">OUR TEAM</div>
+<h2>Meet the Squad</h2>
+<p>Committed players. One team. One vision.</p>
+</div>
+<span class="badge">SQUAD ROSTER</span>
+</div>
+<div class="grid" id="database-player-list">
+<div class="empty">Loading team players...</div>
+</div>
+</section>
+
+<section id="matches">
+<div class="section-head">
+<div>
+<div class="eyebrow">MATCH CENTRE</div>
+<h2>Fixtures & Results</h2>
+<p>Upcoming matches and recent results will appear here.</p>
+</div>
+</div>
+<div class="empty">No official match records have been added yet.<br>Match schedules and scorecards will be published here.</div>
+</section>
+
+<section>
+<div class="section-head">
+<div>
+<div class="eyebrow">CLUB PERFORMANCE</div>
+<h2>Statistics & Records</h2>
+<p>Player and team performance tracking.</p>
+</div>
+</div>
+<div class="empty">Statistics will appear after verified match data is entered.</div>
+</section>
+
+<section id="about">
+<div class="section-head">
+<div>
+<div class="eyebrow">OUR IDENTITY</div>
+<h2>About the Club</h2>
+</div>
+</div>
+<div class="card">
+<p style="color:var(--muted);line-height:1.8;margin:0">
+SUPER SHINING STARS is a cricket team built on teamwork, discipline and a love for the game. This official website brings our squad, matches, results and achievements together.
+</p>
+</div>
+</section>
+
 </main>
-<footer><div class="wrap foot"><span>© 2026 SUPER SHINING STARS 🌟</span><span>Built for the team · Purple & Gold Edition</span></div></footer>
 
-<!-- Supabase connection -->
+<footer>
+<div class="wrap foot">
+<span>© 2026 SUPER SHINING STARS 🌟</span>
+<span>Built for the team · Purple & Gold Edition</span>
+</div>
+</footer>
+
+<!-- SUPABASE DATABASE CONNECTION -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
-const SUPABASE_URL = "‎https://nvkqxeiicvwbuiogcbpj.supabase.co/rest/v1/
-‎";
+const SUPABASE_URL = "https://nvkqxeiicvwbuiogcbpj.supabase.co";
+
 const SUPABASE_KEY = "sb_publishable_-C9Axiw3Y6JC2sbupeFVHQ_lSym4gKd";
 
 const db = window.supabase.createClient(
@@ -70,91 +219,8 @@ const db = window.supabase.createClient(
 );
 
 async function loadTeamPlayers() {
-  const { data, error } = await db
-    .from("players")
-    .select("id, name, role, jersey_number")
-    .eq("is_active", true)
-    .order("id");
-
-  if (error) {
-    console.error("Players loading error:", error.message);
-    return;
-  }
-
-  const section = document.createElement("section");
-  section.id = "live-database-squad";
-  section.innerHTML = `
-    <div style="max-width:1100px;margin:auto;padding:30px 20px">
-      <h2 style="color:#e6c36a">SUPER SHINING STARS — LIVE SQUAD</h2>
-      <div id="database-player-list"
-        style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:15px">
-      </div>
-    </div>
-  `;
-
-  const list = section.querySelector("#database-player-list");
-
-  data.forEach(player => {
-    const card = document.createElement("div");
-    card.style.cssText =
-      "background:#1b1230;border:1px solid #b99545;border-radius:12px;padding:18px;color:white";
-
-    const name = document.createElement("h3");
-    name.textContent = player.name;
-
-    const role = document.createElement("p");
-    role.textContent = player.role || "Player";
-
-    const number = document.createElement("p");
-    number.textContent = player.jersey_number
-      ? "Jersey: " + player.jersey_number
-      : "Team Player";
-
-    card.append(name, role, number);
-    list.appendChild(card);
-  });
-
-  document.body.insertBefore(section, document.querySelector("footer"));
-}
-
-loadTeamPlayers();
-</script>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<script>
-const SUPABASE_URL = "‎https://nvkqxeiicvwbuiogcbpj.supabase.co/rest/v1/
-‎";
-const SUPABASE_KEY = "sb_publishable_-C9Axiw3Y6JC2sbupeFVHQ_lSym4gKd";
-
-const db = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
-);
-
-async function loadTeamPlayers() {
-  const section = document.createElement("section");
-  section.id = "live-database-squad";
-  section.innerHTML = `
-    <div class="wrap">
-      <div class="section-head">
-        <div>
-          <div class="eyebrow">LIVE FROM DATABASE</div>
-          <h2>Live Squad 🌟</h2>
-          <p id="squad-status">Loading players...</p>
-        </div>
-        <span class="badge">LIVE</span>
-      </div>
-      <div class="grid" id="database-player-list"></div>
-    </div>
-  `;
-
-  const footer = document.querySelector("footer");
-  if (footer) footer.before(section);
-  else document.body.append(section);
-
-  const status = section.querySelector("#squad-status");
-  const list = section.querySelector("#database-player-list");
+  const list = document.getElementById("database-player-list");
+  const status = document.createElement("p");
 
   try {
     const { data, error } = await db
@@ -165,7 +231,15 @@ async function loadTeamPlayers() {
 
     if (error) throw error;
 
-    status.textContent = data.length + " registered team players";
+    list.innerHTML = "";
+
+    if (!data || data.length === 0) {
+      list.innerHTML = '<div class="empty">No active players found.</div>';
+      document.getElementById("player-count").textContent = "0";
+      return;
+    }
+
+    document.getElementById("player-count").textContent = data.length;
 
     data.forEach(player => {
       const card = document.createElement("article");
@@ -185,16 +259,20 @@ async function loadTeamPlayers() {
       role.textContent = player.role || "Player";
 
       card.append(number, name, role);
-      list.append(card);
+      list.appendChild(card);
     });
 
   } catch (error) {
-    status.textContent = "Could not load squad: " + error.message;
+    list.innerHTML = "";
+    const message = document.createElement("div");
+    message.className = "empty";
+    message.textContent = "Unable to load squad: " + error.message;
+    list.appendChild(message);
   }
 }
 
 loadTeamPlayers();
 </script>
-  
+
 </body>
 </html>
