@@ -120,5 +120,81 @@ async function loadTeamPlayers() {
 loadTeamPlayers();
 </script>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+const SUPABASE_URL = "‎https://nvkqxeiicvwbuiogcbpj.supabase.co/rest/v1/
+‎";
+const SUPABASE_KEY = "sb_publishable_-C9Axiw3Y6JC2sbupeFVHQ_lSym4gKd";
+
+const db = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+async function loadTeamPlayers() {
+  const section = document.createElement("section");
+  section.id = "live-database-squad";
+  section.innerHTML = `
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">LIVE FROM DATABASE</div>
+          <h2>Live Squad 🌟</h2>
+          <p id="squad-status">Loading players...</p>
+        </div>
+        <span class="badge">LIVE</span>
+      </div>
+      <div class="grid" id="database-player-list"></div>
+    </div>
+  `;
+
+  const footer = document.querySelector("footer");
+  if (footer) footer.before(section);
+  else document.body.append(section);
+
+  const status = section.querySelector("#squad-status");
+  const list = section.querySelector("#database-player-list");
+
+  try {
+    const { data, error } = await db
+      .from("players")
+      .select("id, name, role, jersey_number")
+      .eq("is_active", true)
+      .order("id", { ascending: true });
+
+    if (error) throw error;
+
+    status.textContent = data.length + " registered team players";
+
+    data.forEach(player => {
+      const card = document.createElement("article");
+      card.className = "card player";
+
+      const number = document.createElement("div");
+      number.className = "number";
+      number.textContent = player.jersey_number
+        ? "JERSEY #" + player.jersey_number
+        : "TEAM PLAYER";
+
+      const name = document.createElement("h3");
+      name.textContent = player.name;
+
+      const role = document.createElement("div");
+      role.className = "role";
+      role.textContent = player.role || "Player";
+
+      card.append(number, name, role);
+      list.append(card);
+    });
+
+  } catch (error) {
+    status.textContent = "Could not load squad: " + error.message;
+  }
+}
+
+loadTeamPlayers();
+</script>
+  
 </body>
 </html>
